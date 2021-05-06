@@ -40,12 +40,15 @@ int64_t septal_decode(const void *data) {
     // Decode first byte.
     uint64_t x = *ptr & 0x3F;
     uint_fast8_t shift = 6;
+
+    // Decode remaining bytes.
     while (*ptr & 0x80) {
         ++ptr;
         const uint64_t chunk = *ptr & 0x7F;
         x |= chunk << shift;
         shift += 7;
     }
+
     return (int64_t)(*(uint8_t *)data & 0x40 ? -x : x);
 }
 
